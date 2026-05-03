@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Reviews, Queries & Ratings | Recipe Finder</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      .review-form, .reviews-list { max-width: 520px; margin: 35px auto; background: rgba(255,255,255,0.95); padding: 25px; border-radius: 8px; }
+      .review-form input, .review-form textarea, .review-form select { width: 100%; margin-bottom: 12px; padding: 8px; border-radius: 4px; border: 1px solid #ccc; }
+      .review-form button { background: #4caf50; color: #fff; border: none; padding: 10px 18px; border-radius: 4px; cursor: pointer; }
+      .review { border-bottom: 1px solid #eee; margin-bottom: 12px; padding-bottom: 12px; }
+      .review:last-child { border-bottom: none; }
+      .star { color: gold; }
+    </style>
+  </head>
+  <body>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="classes.html">Online Classes</a>
+      <a href="reviews.html">Reviews & Queries</a>
+    </nav>
+    <div class="recipe-finder-container">
+      <h1 style="color:whitesmoke">Reviews, Queries & Ratings</h1>
+      <form class="review-form" id="reviewForm">
+        <h2>Leave a Review or Query</h2>
+        <input type="text" id="name" placeholder="Your name" required />
+        <textarea id="review" placeholder="Your review or query..." rows="5" required></textarea>
+        <label for="rating">Rating:</label>
+        <select id="rating" required>
+          <option value="">Select</option>
+          <option value="1">1 ★</option>
+          <option value="2">2 ★★</option>
+          <option value="3">3 ★★★</option>
+          <option value="4">4 ★★★★</option>
+          <option value="5">5 ★★★★★</option>
+        </select>
+        <button type="submit">Submit</button>
+      </form>
+      <div class="reviews-list" id="reviewsList">
+        <h2>Recent Reviews & Queries</h2>
+        <!-- Reviews will be injected here -->
+      </div>
+    </div>
+    <script>
+      const reviewForm = document.getElementById('reviewForm');
+      const reviewsList = document.getElementById('reviewsList');
+
+      // Simple localStorage review persistence for demonstration
+      function renderReviews() {
+        const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+        reviewsList.innerHTML = '<h2>Recent Reviews & Queries</h2>' +
+          (reviews.length ? reviews.map(r => `
+            <div class="review">
+              <strong>${r.name}</strong> 
+              <span>${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</span>
+              <p>${r.text}</p>
+            </div>
+          `).join('') : '<p>No reviews yet.</p>');
+      }
+
+      reviewForm.onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const text = document.getElementById('review').value.trim();
+        const rating = parseInt(document.getElementById('rating').value);
+        if(name && text && rating) {
+          const reviews = JSON.parse(localStorage.getItem('reviews') || '[]');
+          reviews.unshift({ name, text, rating });
+          localStorage.setItem('reviews', JSON.stringify(reviews));
+          reviewForm.reset();
+          renderReviews();
+        }
+      };
+      renderReviews();
+    </script>
+  </body>
+</html>

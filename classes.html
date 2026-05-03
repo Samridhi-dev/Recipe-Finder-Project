@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title> Online Classes | Recipe Finder</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="classes.html">Online Classes</a>
+      <a href="reviews.html">Reviews & Queries</a>
+    </nav>
+    <div class="recipe-finder-container">
+      <h1 style="color:whitesmoke">Online Cooking Classes</h1>
+      <div class="classes-list">
+        <div class="class-card">
+          <h3>Beginner Baking</h3>
+          <p>Learn basics of baking breads, cakes, and cookies.</p>
+          <p><strong>Date:</strong> 10-09-2025</p>
+          <p><strong>Time:</strong> 2 hrs/day </p>
+          <p><strong>Day:</strong> 45 days </p>
+        </div>
+        <div class="class-card">
+          <h3>Healthy Salads Workshop</h3>
+          <p>Explore creative and nutritious salad recipes with live chef guidance.</p>
+          <p><strong>Date:</strong> 15-09-2025</p>
+          <p><strong>Time:</strong> 2.5 hrs/day </p>
+          <p><strong>Day:</strong> 50 days </p>
+
+        </div>
+        <div class="class-card">
+          <h3>Indian Cuisine Masterclass</h3>
+          <p>Cook classic Indian dishes with step-by-step instructions.</p>
+          <p><strong>Date:</strong> 20-09-2025</p>
+          <p><strong>Time:</strong> 1.5 hrs/day </p>
+          <p><strong>Day:</strong> 55 days </p>
+        </div>
+      </div>
+      <div class="registration-form" id="registrationFormContainer">
+        <h2>Register for a Class</h2>
+        <form id="registrationForm" autocomplete="off">
+          <div id="registrationSuccess" class="registration-success" style="display:none;">
+            Thank you for registering! We will contact you soon.
+          </div>
+          <label for="participantName">Name</label>
+          <input type="text" id="participantName" name="participantName" required />
+
+          <label for="participantEmail">Email</label>
+          <input type="email" id="participantEmail" name="participantEmail" required />
+
+          <label for="classSelect">Choose Class</label>
+          <select id="classSelect" name="classSelect" required>
+            <option value="">Select a class</option>
+            <option value="Beginner Baking">Beginner Baking (2025-09-10)</option>
+            <option value="Healthy Salads Workshop">Healthy Salads Workshop (2025-09-15)</option>
+            <option value="Indian Cuisine Masterclass">Indian Cuisine Masterclass (2025-09-20)</option>
+          </select>
+
+          <button type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      // Basic demo registration (localStorage or in-memory for now)
+      document.getElementById('registrationForm').onsubmit = function(e) {
+        e.preventDefault();
+        // Get values
+        const name = document.getElementById('participantName').value.trim();
+        const email = document.getElementById('participantEmail').value.trim();
+        const className = document.getElementById('classSelect').value;
+        if(name && email && className) {
+          let regs = JSON.parse(localStorage.getItem('classRegs') || '[]');
+          regs.unshift({ name, email, className, date: new Date().toISOString() });
+          localStorage.setItem('classRegs', JSON.stringify(regs));
+          document.getElementById('registrationForm').reset();
+          document.getElementById('registrationSuccess').style.display = 'block';
+          setTimeout(() => {
+            document.getElementById('registrationSuccess').style.display = 'none';
+          }, 4000);
+        }
+      };
+    </script>
+    </div>
+  </body>
+</html>
